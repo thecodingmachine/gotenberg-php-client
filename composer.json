@@ -1,6 +1,6 @@
 {
   "name": "thecodingmachine/gotenberg-php-client",
-  "description": "A client to send files to a Gotenberg API",
+  "description": "A client for sending files to a Gotenberg API",
   "keywords" : [
     "Gotenberg",
     "API",
