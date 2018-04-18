@@ -20,12 +20,16 @@ class ClientTest extends TestCase
     /** @var Document */
     private $pdfDocument;
 
+    /** @var Document */
+    private $noExtensionDocument;
+
     public function setUp()
     {
         $this->officeDocument = $this->makeDocument('file.docx');
         $this->htmlDocument = $this->makeDocument('file.html');
         $this->markdownDocument = $this->makeDocument('file.md');
         $this->pdfDocument = $this->makeDocument('file.pdf');
+        $this->noExtensionDocument = $this->makeDocument('file');
     }
 
     private function makeDocument(string $fileName): Document
@@ -74,5 +78,13 @@ class ClientTest extends TestCase
             $this->pdfDocument
         ], $storingPath);
         $this->assertFileExists($filePath);
+    }
+
+    function testClientException()
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+
+        $this->expectException(ClientException::class);
+        $client->forward([$this->noExtensionDocument]);
     }
 }
