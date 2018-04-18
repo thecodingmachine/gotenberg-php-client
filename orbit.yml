@@ -1,0 +1,24 @@
+tasks:
+
+  - use: up
+    short: Starts the CI stack
+    run:
+      - docker-compose up -d gotenberg
+
+  - use: down
+    short: Stops the CI stack
+    run:
+      - docker-compose down
+
+  - use: lint
+    shorts: Runs linter inside a container
+    run:
+      - docker-compose run --rm -T php composer run cs-fix
+
+  - use: ci
+    short: Runs CI process
+    run:
+      - docker-compose run --rm -T php composer install
+      - docker-compose run --rm -T php composer run cs-check
+      - docker-compose run --rm -T php composer run phpstan
+      - docker-compose run --rm -T php composer run phpunit

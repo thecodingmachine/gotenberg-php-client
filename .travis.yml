@@ -1,0 +1,13 @@
+sudo: required
+
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - wget -qO- https://github.com/gulien/orbit/releases/download/v3.0.1/orbit_Linux_x86_64.tar.gz | tar xvz -C .
+  - sudo mv ./orbit /usr/local/bin && chmod +x /usr/local/bin/orbit
+
+script:
+  - orbit run up ci
