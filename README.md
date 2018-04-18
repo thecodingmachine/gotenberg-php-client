@@ -33,7 +33,7 @@ We also suggest installing `composer require php-http/guzzle6-adapter`, unless y
 
 ## Docker
 
-As the [Gotenberg](https://github.com/thecodingmachine/gotenberg) is provided within a Docker image, you'll have to add it
+As the [Gotenberg](https://github.com/thecodingmachine/gotenberg) API is provided within a Docker image, you'll have to add it
 to your Docker Compose stack:
 
 ```yaml
