@@ -47,7 +47,7 @@ services:
     image: thecodingmachine/gotenberg:1.0.0
 ```
 
-You may not start your stack using:
+You may now start your stack using:
 
 ```bash
 $ docker-compose up --scale gotenberg=your_number_of_instances
