@@ -47,16 +47,6 @@ class Document
     }
 
     /**
-     * @param string $fileName
-     * @return Document
-     */
-    public function setFileName(string $fileName): Document
-    {
-        $this->fileName = $fileName;
-        return $this;
-    }
-
-    /**
      * @return StreamInterface
      */
     public function getFileStream(): StreamInterface
