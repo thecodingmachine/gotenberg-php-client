@@ -5,6 +5,8 @@ services:
   php:
     image: thecodingmachine/php:7.1-v1-cli
     container_name: php
+    environment:
+      - PHP_EXTENSION_XDEBUG=1
     restart: 'no'
     volumes:
       - ./:/usr/src/app:rw
