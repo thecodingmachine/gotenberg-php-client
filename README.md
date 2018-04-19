@@ -65,7 +65,7 @@ namespace YourAwesomeNamespace;
 
 use TheCodingMachine\Gotenberg\Client;
 use TheCodingMachine\Gotenberg\ClientException;
-use TheCodingMachine\Gotenberg\Document;
+use TheCodingMachine\Gotenberg\DocumentFactory;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
 
@@ -78,15 +78,13 @@ class YourAwesomeClass {
         $client = new Client('gotenberg:3000');
         
         # let's instantiate some documents you wish to convert.
-        $yourOfficeDocument = new Document('file.docx');
-        $yourOfficeDocument->feedFromPath('path/to/file');
-        
-        $yourHTMLDocument = new Document('file.html');
-        $yourHTMLDocument->feedFromStream(new LazyOpenStream('path/to/file', 'r'));
+        $yourOfficeDocument = DocumentFactory::makeFromPath('file.docx', '/path/to/file');
+        $yourHTMLDocument = DocumentFactory::makeFromStream('file.html', new LazyOpenStream('path/to/file', 'r'));
         
         # now let's send those documents!
         try {
             # store method allows you to... store the resulting PDF in a particular folder.
+            # this method also returns the resulting PDF path.
             $filePath = $client->store([
                 $yourOfficeDocument,
                 $yourHTMLDocument
