@@ -1,3 +1,4 @@
 vendor
 tests/store
 clover.xml
+composer.lock
