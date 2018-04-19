@@ -87,16 +87,16 @@ class YourAwesomeClass {
         # now let's send those documents!
         try {
             # store method allows you to... store the resulting PDF in a particular folder.
-            $client->store([
+            $filePath = $client->store([
                 $yourOfficeDocument,
                 $yourHTMLDocument
             ], 'path/to/folder/you/want/the/pdf/to/be/store');
             
             # if you wish to redirect the response directly to the browser, you may also use:
             $response = $client->forward([
-                            $yourOfficeDocument,
-                            $yourHTMLDocument
-                        ]);
+                $yourOfficeDocument,
+                $yourHTMLDocument
+            ]);
             
         } catch (ClientException $e) {
             # this exception is thrown by the client if the API has returned a code != 200.
