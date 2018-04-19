@@ -74,7 +74,7 @@ class YourAwesomeClass {
     public function yourAwesomeMethod()
     {
         $client = new Client('gotenberg:3000', new \Http\Adapter\Guzzle6\Client());
-        # or the following if your want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
+        # or the following if you want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
         $client = new Client('gotenberg:3000');
         
         # let's instantiate some documents you wish to convert.
