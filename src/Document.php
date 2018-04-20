@@ -2,7 +2,6 @@
 
 namespace TheCodingMachine\Gotenberg;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
 use Psr\Http\Message\StreamInterface;
 
 class Document
@@ -16,25 +15,11 @@ class Document
     /**
      * Document constructor.
      * @param string $fileName
-     */
-    public function __construct(string $fileName)
-    {
-        $this->fileName = $fileName;
-    }
-
-    /**
-     * @param string $filePath
-     */
-    public function feedFromPath(string $filePath): void
-    {
-        $this->fileStream = new LazyOpenStream($filePath, 'r');
-    }
-
-    /**
      * @param StreamInterface $fileStream
      */
-    public function feedFromStream(StreamInterface $fileStream): void
+    public function __construct(string $fileName, StreamInterface $fileStream)
     {
+        $this->fileName = $fileName;
         $this->fileStream = $fileStream;
     }
 

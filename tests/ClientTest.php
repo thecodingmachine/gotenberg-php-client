@@ -25,19 +25,11 @@ class ClientTest extends TestCase
 
     public function setUp()
     {
-        $this->officeDocument = $this->makeDocument('file.docx');
-        $this->htmlDocument = $this->makeDocument('file.html');
-        $this->markdownDocument = $this->makeDocument('file.md');
-        $this->pdfDocument = $this->makeDocument('file.pdf');
-        $this->noExtensionDocument = $this->makeDocument('file');
-    }
-
-    private function makeDocument(string $fileName): Document
-    {
-        $document = new Document($fileName);
-        $document->feedFromPath(__DIR__ . '/assets/' . $fileName);
-
-        return $document;
+        $this->officeDocument = DocumentFactory::makeFromPath('file.docx', __DIR__ . '/assets/file.docx');
+        $this->htmlDocument = DocumentFactory::makeFromPath('file.html', __DIR__ . '/assets/file.html');
+        $this->markdownDocument = DocumentFactory::makeFromPath('file.md', __DIR__ . '/assets/file.md');
+        $this->pdfDocument = DocumentFactory::makeFromPath('file.pdf', __DIR__ . '/assets/file.pdf');
+        $this->noExtensionDocument = DocumentFactory::makeFromPath('file', __DIR__ . '/assets/file.pdf');
     }
 
     function testForward()
@@ -63,7 +55,7 @@ class ClientTest extends TestCase
 
     function testStore()
     {
-        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        $client = new Client(self::API_URL);
         $storingPath = __DIR__ . '/store';
 
         // case 1: sends a single document.
