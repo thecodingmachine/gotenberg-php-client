@@ -44,7 +44,7 @@ services:
   # your others services
 
   gotenberg:
-    image: thecodingmachine/gotenberg:1.0.0
+    image: thecodingmachine/gotenberg:2.0.0
 ```
 
 You may now start your stack using:
