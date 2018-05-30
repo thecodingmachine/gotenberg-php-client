@@ -25,11 +25,17 @@ This package helps you to interact with this API using PHP.
 
 ## Install
 
+Unless your project already have a PSR7 `HttpClient`, install `php-http/guzzle6-adapter`:
+
+```bash
+$ composer require php-http/guzzle6-adapter
+```
+
+Then the PHP client:
+
 ```bash
 $ composer require thecodingmachine/gotenberg-php-client
 ```
-
-We also suggest installing `composer require php-http/guzzle6-adapter`, unless your project already have a PSR7 `HttpClient`!
 
 ## Docker
 
