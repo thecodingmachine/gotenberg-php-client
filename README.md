@@ -102,6 +102,9 @@ class YourAwesomeClass {
                 $yourHTMLDocument
             ]);
             
+            # you may also retrieve the associated resource for storing the resulting PDF in database.
+            $resource = $response->getBody()->detach();
+            
         } catch (ClientException $e) {
             # this exception is thrown by the client if the API has returned a code != 200.
         } catch (\Http\Client\Exception $e) {
