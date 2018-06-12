@@ -25,7 +25,7 @@ This package helps you to interact with this API using PHP.
 
 ## Install
 
-Unless your project already have a PSR7 `HttpClient`, install `php-http/guzzle6-adapter`:
+Unless your project already has a PSR7 `HttpClient`, install `php-http/guzzle6-adapter`:
 
 ```bash
 $ composer require php-http/guzzle6-adapter
