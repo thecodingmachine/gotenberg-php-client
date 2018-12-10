@@ -66,8 +66,6 @@ class YourAwesomeClass {
             # this exception is thrown is given paper size or margins are not correct.
         } catch (ClientException $e) {
             # this exception is thrown by the client if the API has returned a code != 200.
-        } catch (\Http\Client\Exception $e) {
-            # some PSR7 exception.
         } catch (\Exception $e) {
             # some (random?) exception.
         }
