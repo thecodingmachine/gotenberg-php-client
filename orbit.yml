@@ -13,12 +13,12 @@ tasks:
   - use: lint
     shorts: Runs linter inside a container
     run:
-      - docker-compose run --rm -T php composer run cs-fix
-
-  - use: ci
-    short: Runs CI process
-    run:
       - docker-compose run --rm -T php composer install
+      - docker-compose run --rm -T php composer run cs-fix
       - docker-compose run --rm -T php composer run cs-check
       - docker-compose run --rm -T php composer run phpstan
+
+  - use: tests
+    short: Runs tests inside a container
+    run:
       - docker-compose run --rm -T php composer run phpunit

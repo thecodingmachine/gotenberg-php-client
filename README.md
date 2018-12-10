@@ -79,4 +79,3 @@ For more complete usages, head to the [documentation](https://thecodingmachine.g
 
 [![Travis CI](https://travis-ci.org/thecodingmachine/gotenberg-php-client.svg?branch=master)](https://travis-ci.org/thecodingmachine/gotenberg-php-client)
 [![Scrutinizer](https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/?branch=master)
-[![Codecov](https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master/graph/badge.svg)](https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master)

@@ -10,5 +10,4 @@ before_install:
   - sudo mv ./orbit /usr/local/bin && chmod +x /usr/local/bin/orbit
 
 script:
-  - orbit run up ci
-  - bash <(curl -s https://codecov.io/bash)
+  - orbit run lint
