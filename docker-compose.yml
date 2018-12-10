@@ -3,7 +3,7 @@ version: '3'
 services:
 
   php:
-    image: thecodingmachine/php:7.1-v1-cli
+    image: thecodingmachine/php:7.2-v2-cli
     container_name: php
     environment:
       - PHP_EXTENSION_XDEBUG=1
@@ -12,6 +12,6 @@ services:
       - ./:/usr/src/app:rw
 
   gotenberg:
-    image: thecodingmachine/gotenberg:2.0.0
+    image: thecodingmachine/gotenberg:3
     container_name: gotenberg
     restart: 'no'

@@ -5,7 +5,7 @@ namespace TheCodingMachine\Gotenberg;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use Psr\Http\Message\StreamInterface;
 
-class DocumentFactory
+final class DocumentFactory
 {
     /**
      * @param string $fileName

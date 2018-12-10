@@ -2,7 +2,7 @@
 
 namespace TheCodingMachine\Gotenberg;
 
-final class ClientException extends \Exception
+final class RequestException extends \Exception
 {
 
 }

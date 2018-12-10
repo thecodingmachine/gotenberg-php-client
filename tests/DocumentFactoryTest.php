@@ -12,7 +12,6 @@ class DocumentFactoryTest extends TestCase
         // case 1: uses a file path.
         $document = DocumentFactory::makeFromPath('file.pdf', __DIR__ . '/assets/file.pdf');
         $this->assertNotEmpty($document->getFileStream());
-
         // case 2: uses a stream.
         $document = DocumentFactory::makeFromStream('file.pdf', new LazyOpenStream(__DIR__ . '/assets/file.pdf', 'r'));
         $this->assertNotEmpty($document->getFileStream());

@@ -8,8 +8,13 @@ use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Safe\Exceptions\FilesystemException;
+use function Safe\mkdir;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\fclose;
 
-class Client
+final class Client
 {
     /** @var HttpClient */
     private $client;
@@ -31,67 +36,70 @@ class Client
     /**
      * Sends the given documents to the API and returns the response.
      *
-     * @param Document[] $documents
+     * @param GotenbergRequestInterface $request
      * @return ResponseInterface
      * @throws ClientException
      * @throws \Exception
-     * @throws \Http\Client\Exception
+     * @throws FilesystemException
      */
-    public function forward(array $documents): ResponseInterface
+    public function post(GotenbergRequestInterface $request): ResponseInterface
     {
-        return $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($documents)));
+        return $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
     }
 
     /**
      * Sends the given documents to the API, stores the resulting PDF in the given storing path
      * and returns the resulting PDF path.
      *
-     * @param Document[] $documents
+     * @param GotenbergRequestInterface $request
      * @param string $storingPath
      * @return string
      * @throws ClientException
      * @throws \Exception
-     * @throws \Http\Client\Exception
+     * @throws FilesystemException
      */
-    public function store(array $documents, string $storingPath): string
+    public function store(GotenbergRequestInterface $request, string $storingPath): string
     {
-        $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($documents)));
-
+        $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         if (!is_dir($storingPath)) {
             mkdir($storingPath);
         }
-
         $filePath = $storingPath . '/' . uniqid() . '.pdf';
         $fileStream = $response->getBody();
-
         $fp = fopen($filePath, 'w');
         fwrite($fp, $fileStream);
         fclose($fp);
-
         return $filePath;
     }
 
     /**
-     * @param Document[] $documents
+     * @param GotenbergRequestInterface $request
      * @return RequestInterface
      */
-    private function makeMultipartFormDataRequest(array $documents): RequestInterface
+    private function makeMultipartFormDataRequest(GotenbergRequestInterface $request): RequestInterface
     {
         $multipartData = [];
-
-        foreach ($documents as $document) {
+        foreach ($request->getFormValues() as $fieldName => $fieldValue) {
+            $multipartData[] = [
+                'name' => $fieldName,
+                'contents' => $fieldValue,
+            ];
+        }
+        /**
+         * @var string $filename
+         * @var Document $document
+         */
+        foreach ($request->getFormFiles() as $filename => $document) {
             $multipartData[] = [
                 'name' => 'files',
-                'filename' => $document->getFileName(),
+                'filename' => $filename,
                 'contents' => $document->getFileStream()
             ];
         }
-
         $body = new MultipartStream($multipartData);
         $messageFactory = MessageFactoryDiscovery::find();
-
         return $messageFactory
-            ->createRequest('POST', $this->apiURL)
+            ->createRequest('POST', $this->apiURL . $request->getPostURL())
             ->withHeader('Content-Type', 'multipart/form-data; boundary="' . $body->getBoundary() . '"')
             ->withBody($body);
     }

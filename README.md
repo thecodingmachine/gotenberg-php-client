@@ -1,27 +1,6 @@
-<h3 align="center">Gotenberg PHP Client</h3>
-<p align="center">A PHP client for the Gotenberg API</p>
-<p align="center">
-    <a href="https://travis-ci.org/thecodingmachine/gotenberg-php-client">
-        <img src="https://travis-ci.org/thecodingmachine/gotenberg-php-client.svg?branch=master" alt="Travis CI">
-    </a>
-    <a href="https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/?branch=master">
-        <img src="https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/badges/quality-score.png?b=master" alt="Scrutinizer">
-    </a>
-    <a href="https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master">
-        <img src="https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master/graph/badge.svg" alt="Codecov">
-    </a>
-</p>
+# Gotenberg PHP client
 
----
-
-[Gotenberg](https://github.com/thecodingmachine/gotenberg) is a stateless API for converting Markdown files, HTML files and Office documents to PDF.
-This package helps you to interact with this API using PHP.
-
-# Menu
-
-* [Install](#install)
-* [Docker](#docker)
-* [Usage](#usage)
+A simple PHP client for interacting with a Gotenberg API.
 
 ## Install
 
@@ -37,31 +16,6 @@ Then the PHP client:
 $ composer require thecodingmachine/gotenberg-php-client
 ```
 
-## Docker
-
-As the [Gotenberg](https://github.com/thecodingmachine/gotenberg) API is provided within a Docker image, you'll have to add it
-to your Docker Compose stack:
-
-```yaml
-version: '3'
-
-services:
-
-  # your others services
-
-  gotenberg:
-    image: thecodingmachine/gotenberg:2.0.0
-```
-
-You may now start your stack using:
-
-```bash
-$ docker-compose up --scale gotenberg=your_number_of_instances
-```
-
-When requesting the Gotenberg service with your client, Docker will automatically redirect a request to a Gotenberg container
-according to the round-robin strategy.
-
 ## Usage
 
 ```php
@@ -72,8 +26,9 @@ namespace YourAwesomeNamespace;
 use TheCodingMachine\Gotenberg\Client;
 use TheCodingMachine\Gotenberg\ClientException;
 use TheCodingMachine\Gotenberg\DocumentFactory;
-
-use GuzzleHttp\Psr7\LazyOpenStream;
+use TheCodingMachine\Gotenberg\HTMLRequest;
+use TheCodingMachine\Gotenberg\Request;
+use TheCodingMachine\Gotenberg\RequestException;
 
 class YourAwesomeClass {
     
@@ -83,25 +38,32 @@ class YourAwesomeClass {
         # or the following if you want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
         $client = new Client('gotenberg:3000');
         
-        # let's instantiate some documents you wish to convert.
-        $yourOfficeDocument = DocumentFactory::makeFromPath('file.docx', '/path/to/file');
-        $yourHTMLDocument = DocumentFactory::makeFromStream('file.html', new LazyOpenStream('path/to/file', 'r'));
+        # HTML conversion example.
+        $index = DocumentFactory::makeFromPath('index.html', '/path/to/file');
+        $header = DocumentFactory::makeFromPath('header.html', '/path/to/file');
+        $footer = DocumentFactory::makeFromPath('footer.html', '/path/to/file');
+        $assets = [
+            DocumentFactory::makeFromPath('style.css', '/path/to/file'),
+            DocumentFactory::makeFromPath('img.png', '/path/to/file'),
+        ];
         
-        # now let's send those documents!
         try {
+            $request = new HTMLRequest($index);
+            $request->setHeader($header);
+            $request->setFooter($footer);
+            $request->setAssets($assets);
+            $request->setPaperSize(Request::A4);
+            $request->setMargins(Request::NO_MARGINS);
+            
             # store method allows you to... store the resulting PDF in a particular folder.
             # this method also returns the resulting PDF path.
-            $filePath = $client->store([
-                $yourOfficeDocument,
-                $yourHTMLDocument
-            ], 'path/to/folder/you/want/the/pdf/to/be/store');
+            $filePath = $client->store($request, 'path/to/folder/you/want/the/pdf/to/be/store');
             
             # if you wish to redirect the response directly to the browser, you may also use:
-            $response = $client->forward([
-                $yourOfficeDocument,
-                $yourHTMLDocument
-            ]);
+            $response = $client->post($request);
             
+        } catch (RequestException $e) {
+            # this exception is thrown is given paper size or margins are not correct.
         } catch (ClientException $e) {
             # this exception is thrown by the client if the API has returned a code != 200.
         } catch (\Http\Client\Exception $e) {
@@ -109,13 +71,14 @@ class YourAwesomeClass {
         } catch (\Exception $e) {
             # some (random?) exception.
         }
-    }
-    
+    }  
 }
 ```
 
-Voilà! :smiley:
+For more complete usages, head to the [documentation](https://thecodingmachine.github.io/gotenberg).
 
----
+## Badges
 
-Would you like to update this documentation ? Feel free to open an [issue](../../issues).
+[![Travis CI](https://travis-ci.org/thecodingmachine/gotenberg-php-client.svg?branch=master)](https://travis-ci.org/thecodingmachine/gotenberg-php-client)
+[![Scrutinizer](https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/thecodingmachine/gotenberg-php-client/?branch=master)
+[![Codecov](https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master/graph/badge.svg)](https://codecov.io/gh/thecodingmachine/gotenberg-php-client/branch/master)

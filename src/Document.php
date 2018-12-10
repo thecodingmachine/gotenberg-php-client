@@ -4,7 +4,7 @@ namespace TheCodingMachine\Gotenberg;
 
 use Psr\Http\Message\StreamInterface;
 
-class Document
+final class Document
 {
     /** @var string */
     private $fileName;
