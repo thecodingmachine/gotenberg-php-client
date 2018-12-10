@@ -34,9 +34,9 @@ class YourAwesomeClass {
     
     public function yourAwesomeMethod()
     {
-        $client = new Client('gotenberg:3000', new \Http\Adapter\Guzzle6\Client());
+        $client = new Client('http://localhost:3000', new \Http\Adapter\Guzzle6\Client());
         # or the following if you want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
-        $client = new Client('gotenberg:3000');
+        $client = new Client('http://localhost:3000');
         
         # HTML conversion example.
         $index = DocumentFactory::makeFromPath('index.html', '/path/to/file');
