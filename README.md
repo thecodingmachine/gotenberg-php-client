@@ -63,7 +63,7 @@ class YourAwesomeClass {
             $response = $client->post($request);
             
         } catch (RequestException $e) {
-            # this exception is thrown is given paper size or margins are not correct.
+            # this exception is thrown if given paper size or margins are not correct.
         } catch (ClientException $e) {
             # this exception is thrown by the client if the API has returned a code != 200.
         } catch (\Exception $e) {
