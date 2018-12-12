@@ -85,6 +85,7 @@ class ClientTest extends TestCase
 
     /**
      * @return OfficeRequest
+     * @throws RequestException
      */
     public function createOfficeRequest(): OfficeRequest
     {
@@ -92,6 +93,7 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('document.docx', __DIR__ . '/assets/office/document.docx'),
         ];
         $request = new OfficeRequest($files);
+        $request->setPaperSize(Request::A4);
         return $request;
     }
 
