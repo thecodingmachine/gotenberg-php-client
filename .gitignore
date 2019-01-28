@@ -1,4 +1,5 @@
 vendor
-tests/store
+tests/store/*
+!tests/store/.gitkeep
 clover.xml
 composer.lock
