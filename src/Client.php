@@ -40,7 +40,6 @@ final class Client
      * @return ResponseInterface
      * @throws ClientException
      * @throws \Exception
-     * @throws FilesystemException
      */
     public function post(GotenbergRequestInterface $request): ResponseInterface
     {
@@ -48,28 +47,21 @@ final class Client
     }
 
     /**
-     * Sends the given documents to the API, stores the resulting PDF in the given storing path
-     * and returns the resulting PDF path.
+     * Sends the given documents to the API, stores the resulting PDF in the given destination.
      *
      * @param GotenbergRequestInterface $request
-     * @param string $storingPath
-     * @return string
+     * @param string $destination
      * @throws ClientException
      * @throws \Exception
      * @throws FilesystemException
      */
-    public function store(GotenbergRequestInterface $request, string $storingPath): string
+    public function store(GotenbergRequestInterface $request, string $destination): void
     {
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
-        if (!is_dir($storingPath)) {
-            mkdir($storingPath);
-        }
-        $filePath = $storingPath . '/' . uniqid() . '.pdf';
         $fileStream = $response->getBody();
-        $fp = fopen($filePath, 'w');
+        $fp = fopen($destination, 'w');
         fwrite($fp, $fileStream);
         fclose($fp);
-        return $filePath;
     }
 
     /**

@@ -16,6 +16,7 @@ abstract class Request
     public const NORMAL_MARGINS = [1, 1, 1, 1];
     public const LARGE_MARGINS = [2, 2, 2, 2];
 
+    protected const REMOTE_URL = 'remoteURL';
     protected const WEBHOOK_URL = 'webhookURL';
     protected const PAPER_WIDTH = 'paperWidth';
     protected const PAPER_HEIGHT = 'paperHeight';

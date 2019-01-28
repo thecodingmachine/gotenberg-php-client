@@ -55,12 +55,11 @@ class YourAwesomeClass {
             $request->setPaperSize(Request::A4);
             $request->setMargins(Request::NO_MARGINS);
             
-            # store method allows you to... store the resulting PDF in a particular folder.
-            # this method also returns the resulting PDF path.
-            $filePath = $client->store($request, 'path/to/folder/you/want/the/pdf/to/be/store');
+            # store method allows you to... store the resulting PDF in a particular destination.
+            $client->store($request, 'path/you/want/the/pdf/to/be/stored.pdf');
             
             # if you wish to redirect the response directly to the browser, you may also use:
-            $response = $client->post($request);
+            $client->post($request);
             
         } catch (RequestException $e) {
             # this exception is thrown if given paper size or margins are not correct.

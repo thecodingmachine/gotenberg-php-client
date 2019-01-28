@@ -18,7 +18,6 @@ final class MarkdownRequest extends HTMLRequest
         $this->markdowns = $markdowns;
     }
 
-
     /**
      * @return string
      */

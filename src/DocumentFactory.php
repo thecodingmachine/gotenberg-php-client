@@ -41,7 +41,6 @@ final class DocumentFactory
     {
         $fileStream = fopen('php://memory', 'rb+');
         fwrite($fileStream, $string);
-
         return new Document($fileName, stream_for($fileStream));
     }
 }

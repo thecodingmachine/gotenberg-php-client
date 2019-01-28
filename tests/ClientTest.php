@@ -12,6 +12,9 @@ class ClientTest extends TestCase
     /** @var HTMLRequest */
     private $HTMLRequest;
 
+    /** @var URLRequest */
+    private $URLRequest;
+
     /** @var MarkdownRequest */
     private $markdownRequest;
 
@@ -27,6 +30,7 @@ class ClientTest extends TestCase
     public function setUp()
     {
         $this->HTMLRequest = $this->createHTMLRequest();
+        $this->URLRequest = $this->createURLRequest();
         $this->markdownRequest = $this->createMarkdownRequest();
         $this->officeRequest = $this->createOfficeRequest();
         $this->mergeRequest = $this->createMergeRequest();
@@ -50,6 +54,22 @@ class ClientTest extends TestCase
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setAssets($assets);
+        $request->setPaperSize(Request::A4);
+        $request->setMargins(Request::NO_MARGINS);
+        return $request;
+    }
+
+    /**
+     * @return URLRequest
+     * @throws RequestException
+     */
+    private function createURLRequest(): URLRequest
+    {
+        $header = DocumentFactory::makeFromPath('header.html', __DIR__ . '/assets/url/header.html');
+        $footer = DocumentFactory::makeFromPath('footer.html', __DIR__ . '/assets/url/footer.html');
+        $request = new URLRequest('https://google.com');
+        $request->setHeader($header);
+        $request->setFooter($footer);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
         return $request;
@@ -85,7 +105,6 @@ class ClientTest extends TestCase
 
     /**
      * @return OfficeRequest
-     * @throws RequestException
      */
     public function createOfficeRequest(): OfficeRequest
     {
@@ -93,7 +112,6 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('document.docx', __DIR__ . '/assets/office/document.docx'),
         ];
         $request = new OfficeRequest($files);
-        $request->setPaperSize(Request::A4);
         return $request;
     }
 
@@ -112,7 +130,6 @@ class ClientTest extends TestCase
 
     /**
      * @throws ClientException
-     * @throws FilesystemException
      */
     function testPost()
     {
@@ -121,15 +138,19 @@ class ClientTest extends TestCase
         $response = $client->post($this->HTMLRequest);
         $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
         $this->assertNotEmpty($response->getBody());
-        // case 2: markdown.
+        // case 2: URL.
+        $response = $client->post($this->URLRequest);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 3: markdown.
         $response = $client->post($this->markdownRequest);
         $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
         $this->assertNotEmpty($response->getBody());
-        // case 3: office.
+        // case 4: office.
         $response = $client->post($this->officeRequest);
         $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
         $this->assertNotEmpty($response->getBody());
-        // case 4: merge.
+        // case 5: merge.
         $response = $client->post($this->mergeRequest);
         $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
         $this->assertNotEmpty($response->getBody());
@@ -142,18 +163,25 @@ class ClientTest extends TestCase
     function testStore()
     {
         $client = new Client(self::API_URL);
-        $storingPath = __DIR__ . '/store';
         // case 1: HTML.
-        $filePath = $client->store($this->HTMLRequest, $storingPath);
+        $filePath = __DIR__ . '/store/resultHTML.pdf';
+        $client->store($this->HTMLRequest, $filePath);
         $this->assertFileExists($filePath);
-        // case 2: markdown.
-        $filePath = $client->store($this->markdownRequest, $storingPath);
+        // case 2: URL.
+        $filePath = __DIR__ . '/store/resultURL.pdf';
+        $client->store($this->URLRequest, $filePath);
         $this->assertFileExists($filePath);
-        // case 3: office.
-        $filePath = $client->store($this->officeRequest, $storingPath);
+        // case 3: markdown.
+        $filePath = __DIR__ . '/store/resultMarkdown.pdf';
+        $client->store($this->markdownRequest, $filePath);
         $this->assertFileExists($filePath);
-        // case 4: merge.
-        $filePath = $client->store($this->mergeRequest, $storingPath);
+        // case 4: office.
+        $filePath = __DIR__ . '/store/resultOffice.pdf';
+        $client->store($this->officeRequest, $filePath);
+        $this->assertFileExists($filePath);
+        // case 5: merge.
+        $filePath = __DIR__ . '/store/resultMerge.pdf';
+        $client->store($this->mergeRequest, $filePath);
         $this->assertFileExists($filePath);
     }
 }

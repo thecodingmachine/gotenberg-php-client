@@ -7,12 +7,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     /** @var Document[] */
     private $files;
 
-    /** @var float|null */
-    private $paperWidth;
-
-    /** @var float|null */
-    private $paperHeight;
-
     /** @var bool */
     private $landscape;
 
@@ -43,12 +37,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
         if (!empty($this->webhookURL)) {
             $values[self::WEBHOOK_URL] = $this->webhookURL;
         }
-        if (!is_null($this->paperWidth)) {
-            $values[self::PAPER_WIDTH] = $this->paperWidth;
-        }
-        if (!is_null($this->paperHeight)) {
-            $values[self::PAPER_HEIGHT] = $this->paperHeight;
-        }
         $values[self::LANDSCAPE] = $this->landscape;
         return $values;
     }
@@ -63,19 +51,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
             $files[$file->getFileName()] = $file;
         }
         return $files;
-    }
-
-    /**
-     * @param float[] $paperSize
-     * @throws RequestException
-     */
-    public function setPaperSize(array $paperSize): void
-    {
-        if (count($paperSize) !== 2) {
-            throw new RequestException('Wrong paper size.');
-        }
-        $this->paperWidth = $paperSize[0];
-        $this->paperHeight = $paperSize[1];
     }
 
     /**
