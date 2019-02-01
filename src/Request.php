@@ -25,6 +25,7 @@ abstract class Request
     protected const MARGIN_LEFT = 'marginLeft';
     protected const MARGIN_RIGHT = 'marginRight';
     protected const LANDSCAPE = 'landscape';
+    protected const WEB_FONTS_TIMEOUT = 'webFontsTimeout';
 
     /** @var string|null */
     protected $webhookURL;

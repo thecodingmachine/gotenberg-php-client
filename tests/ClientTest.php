@@ -56,6 +56,7 @@ class ClientTest extends TestCase
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -72,6 +73,7 @@ class ClientTest extends TestCase
         $request->setFooter($footer);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -100,6 +102,7 @@ class ClientTest extends TestCase
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -125,6 +128,7 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('gotenberg2.pdf', __DIR__ . '/assets/pdf/gotenberg.pdf'),
         ];
         $request = new MergeRequest($files);
+
         return $request;
     }
 

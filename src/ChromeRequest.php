@@ -31,6 +31,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     /** @var bool */
     protected $landscape;
 
+    /** @var int|null */
+    protected $webFontsTimeout;
+
     /**
      * @return array<string,mixed>
      */
@@ -57,6 +60,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
         }
         if (!is_null($this->marginRight)) {
             $values[self::MARGIN_RIGHT] = $this->marginRight;
+        }
+        if (!is_null($this->webFontsTimeout)) {
+            $values[self::WEB_FONTS_TIMEOUT] = $this->webFontsTimeout;
         }
         $values[self::LANDSCAPE] = $this->landscape;
         return $values;
@@ -175,5 +181,13 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;
+    }
+
+    /**
+     * @param int|null $webFontsTimeout
+     */
+    public function setWebFontsTimeout(?int $webFontsTimeout): void
+    {
+        $this->webFontsTimeout = $webFontsTimeout;
     }
 }

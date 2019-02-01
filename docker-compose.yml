@@ -12,6 +12,6 @@ services:
       - ./:/usr/src/app:rw
 
   gotenberg:
-    image: thecodingmachine/gotenberg:4
+    image: thecodingmachine/gotenberg:4.1
     container_name: gotenberg
     restart: 'no'

@@ -9,7 +9,6 @@ use Http\Discovery\MessageFactoryDiscovery;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Safe\Exceptions\FilesystemException;
-use function Safe\mkdir;
 use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\fclose;
