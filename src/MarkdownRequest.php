@@ -2,7 +2,7 @@
 
 namespace TheCodingMachine\Gotenberg;
 
-final class MarkdownRequest extends HTMLRequest
+final class MarkdownRequest extends HTMLRequest implements GotenbergRequestInterface
 {
     /** @var Document[] */
     private $markdowns;

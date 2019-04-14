@@ -2,10 +2,12 @@
 
 namespace TheCodingMachine\Gotenberg;
 
-class URLRequest extends ChromeRequest
+final class URLRequest extends ChromeRequest implements GotenbergRequestInterface
 {
+    private const REMOTE_URL = 'remoteURL';
+
     /** @var string */
-    protected $URL;
+    private $URL;
 
     /**
      * HTMLRequest constructor.

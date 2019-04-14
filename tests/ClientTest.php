@@ -51,12 +51,14 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('style.css', __DIR__ . '/assets/html/style.css'),
         ];
         $request = new HTMLRequest($index);
+        $request->setResultFilename('foo.pdf');
+        $request->setWaitTimeout(5);
+        $request->setWaitDelay(1);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
-        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -69,11 +71,13 @@ class ClientTest extends TestCase
         $header = DocumentFactory::makeFromPath('header.html', __DIR__ . '/assets/url/header.html');
         $footer = DocumentFactory::makeFromPath('footer.html', __DIR__ . '/assets/url/footer.html');
         $request = new URLRequest('https://google.com');
+        $request->setResultFilename('foo.pdf');
+        $request->setWaitTimeout(5);
+        $request->setWaitDelay(1);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
-        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -97,12 +101,14 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('style.css', __DIR__ . '/assets/markdown/style.css'),
         ];
         $request = new MarkdownRequest($index, $markdowns);
+        $request->setResultFilename('foo.pdf');
+        $request->setWaitTimeout(5);
+        $request->setWaitDelay(1);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
-        $request->setWebFontsTimeout(500);
         return $request;
     }
 
@@ -115,6 +121,9 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('document.docx', __DIR__ . '/assets/office/document.docx'),
         ];
         $request = new OfficeRequest($files);
+        $request->setResultFilename('foo.pdf');
+        $request->setWaitTimeout(5);
+        $request->setLandscape(false);
         return $request;
     }
 
@@ -128,12 +137,14 @@ class ClientTest extends TestCase
             DocumentFactory::makeFromPath('gotenberg2.pdf', __DIR__ . '/assets/pdf/gotenberg.pdf'),
         ];
         $request = new MergeRequest($files);
-
+        $request->setResultFilename('foo.pdf');
+        $request->setWaitTimeout(5);
         return $request;
     }
 
     /**
      * @throws ClientException
+     * @throws \HTTP\Client\Exception
      */
     function testPost()
     {
@@ -163,6 +174,7 @@ class ClientTest extends TestCase
     /**
      * @throws ClientException
      * @throws FilesystemException
+     * @throws \HTTP\Client\Exception
      */
     function testStore()
     {

@@ -16,19 +16,52 @@ abstract class Request
     public const NORMAL_MARGINS = [1, 1, 1, 1];
     public const LARGE_MARGINS = [2, 2, 2, 2];
 
-    protected const REMOTE_URL = 'remoteURL';
-    protected const WEBHOOK_URL = 'webhookURL';
-    protected const PAPER_WIDTH = 'paperWidth';
-    protected const PAPER_HEIGHT = 'paperHeight';
-    protected const MARGIN_TOP = 'marginTop';
-    protected const MARGIN_BOTTOM  = 'marginBottom';
-    protected const MARGIN_LEFT = 'marginLeft';
-    protected const MARGIN_RIGHT = 'marginRight';
-    protected const LANDSCAPE = 'landscape';
-    protected const WEB_FONTS_TIMEOUT = 'webFontsTimeout';
+    private const RESULT_FILENAME = 'resultFilename';
+    private const WAIT_TIMEOUT = 'waitTimeout';
+    private const WEBHOOK_URL = 'webhookURL';
 
     /** @var string|null */
-    protected $webhookURL;
+    private $resultFilename;
+
+    /** @var float|null */
+    private $waitTimeout;
+
+    /** @var string|null */
+    private $webhookURL;
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function getFormValues(): array
+    {
+        $values = [];
+        if (!empty($this->resultFilename)) {
+            $values[self::RESULT_FILENAME] = $this->resultFilename;
+        }
+        if (!is_null($this->waitTimeout)) {
+            $values[self::WAIT_TIMEOUT] = $this->waitTimeout;
+        }
+        if (!empty($this->webhookURL)) {
+            $values[self::WEBHOOK_URL] = $this->webhookURL;
+        }
+        return $values;
+    }
+
+    /**
+     * @param string|null $resultFilename
+     */
+    public function setResultFilename(?string $resultFilename): void
+    {
+        $this->resultFilename = $resultFilename;
+    }
+
+    /**
+     * @param float|null $waitTimeout
+     */
+    public function setWaitTimeout(?float $waitTimeout): void
+    {
+        $this->waitTimeout = $waitTimeout;
+    }
 
     /**
      * @param string|null $webhookURL

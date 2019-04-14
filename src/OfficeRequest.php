@@ -4,6 +4,8 @@ namespace TheCodingMachine\Gotenberg;
 
 final class OfficeRequest extends Request implements GotenbergRequestInterface
 {
+    private const LANDSCAPE = 'landscape';
+
     /** @var Document[] */
     private $files;
 
@@ -19,7 +21,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
         $this->files = $files;
     }
 
-
     /**
      * @return string
      */
@@ -33,10 +34,7 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
      */
     public function getFormValues(): array
     {
-        $values = [];
-        if (!empty($this->webhookURL)) {
-            $values[self::WEBHOOK_URL] = $this->webhookURL;
-        }
+        $values = parent::getFormValues();
         $values[self::LANDSCAPE] = $this->landscape;
         return $values;
     }

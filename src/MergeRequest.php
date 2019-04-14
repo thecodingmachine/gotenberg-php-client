@@ -22,19 +22,7 @@ final class MergeRequest extends Request implements GotenbergRequestInterface
      */
     public function getPostURL(): string
     {
-        return '/merge';
-    }
-
-    /**
-     * @return array<string,mixed>
-     */
-    public function getFormValues(): array
-    {
-        $values = [];
-        if (!empty($this->webhookURL)) {
-            $values[self::WEBHOOK_URL] = $this->webhookURL;
-        }
-        return $values;
+        return '/convert/merge';
     }
 
     /**

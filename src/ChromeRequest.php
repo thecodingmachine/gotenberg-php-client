@@ -4,44 +4,53 @@ namespace TheCodingMachine\Gotenberg;
 
 abstract class ChromeRequest extends Request implements GotenbergRequestInterface
 {
+    private const WAIT_DELAY = 'waitDelay';
+    private const PAPER_WIDTH = 'paperWidth';
+    private const PAPER_HEIGHT = 'paperHeight';
+    private const MARGIN_TOP = 'marginTop';
+    private const MARGIN_BOTTOM  = 'marginBottom';
+    private const MARGIN_LEFT = 'marginLeft';
+    private const MARGIN_RIGHT = 'marginRight';
+    private const LANDSCAPE = 'landscape';
+
+    /** @var float|null */
+    private $waitDelay;
+
     /** @var Document|null */
-    protected $header;
+    private $header;
 
     /** @var Document|null */
-    protected $footer;
+    private $footer;
 
     /** @var float|null */
-    protected $paperWidth;
+    private $paperWidth;
 
     /** @var float|null */
-    protected $paperHeight;
+    private $paperHeight;
 
     /** @var float|null */
-    protected $marginTop;
+    private $marginTop;
 
     /** @var float|null */
-    protected $marginBottom;
+    private $marginBottom;
 
     /** @var float|null */
-    protected $marginLeft;
+    private $marginLeft;
 
     /** @var float|null */
-    protected $marginRight;
+    private $marginRight;
 
     /** @var bool */
-    protected $landscape;
-
-    /** @var int|null */
-    protected $webFontsTimeout;
+    private $landscape;
 
     /**
      * @return array<string,mixed>
      */
     public function getFormValues(): array
     {
-        $values = [];
-        if (!empty($this->webhookURL)) {
-            $values[self::WEBHOOK_URL] = $this->webhookURL;
+        $values = parent::getFormValues();
+        if (!is_null($this->waitDelay)) {
+            $values[self::WAIT_DELAY] = $this->waitDelay;
         }
         if (!is_null($this->paperWidth)) {
             $values[self::PAPER_WIDTH] = $this->paperWidth;
@@ -61,9 +70,6 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
         if (!is_null($this->marginRight)) {
             $values[self::MARGIN_RIGHT] = $this->marginRight;
         }
-        if (!is_null($this->webFontsTimeout)) {
-            $values[self::WEB_FONTS_TIMEOUT] = $this->webFontsTimeout;
-        }
         $values[self::LANDSCAPE] = $this->landscape;
         return $values;
     }
@@ -81,6 +87,14 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
             $files['footer.html'] = $this->footer;
         }
         return $files;
+    }
+
+    /**
+     * @param float|null $waitDelay
+     */
+    public function setWaitDelay(?float $waitDelay): void
+    {
+        $this->waitDelay = $waitDelay;
     }
 
     /**
@@ -181,13 +195,5 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;
-    }
-
-    /**
-     * @param int|null $webFontsTimeout
-     */
-    public function setWebFontsTimeout(?int $webFontsTimeout): void
-    {
-        $this->webFontsTimeout = $webFontsTimeout;
     }
 }

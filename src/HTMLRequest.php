@@ -2,13 +2,13 @@
 
 namespace TheCodingMachine\Gotenberg;
 
-class HTMLRequest extends ChromeRequest
+class HTMLRequest extends ChromeRequest implements GotenbergRequestInterface
 {
     /** @var Document */
-    protected $index;
+    private $index;
 
     /** @var Document[] */
-    protected $assets;
+    private $assets;
 
     /**
      * HTMLRequest constructor.
@@ -39,34 +39,6 @@ class HTMLRequest extends ChromeRequest
             $files[$asset->getFileName()] = $asset;
         }
         return $files;
-    }
-
-    /**
-     * @param float[] $paperSize
-     * @throws RequestException
-     */
-    public function setPaperSize(array $paperSize): void
-    {
-        if (count($paperSize) !== 2) {
-            throw new RequestException('Wrong paper size.');
-        }
-        $this->paperWidth = $paperSize[0];
-        $this->paperHeight = $paperSize[1];
-    }
-
-    /**
-     * @param float[] $margins
-     * @throws RequestException
-     */
-    public function setMargins(array $margins): void
-    {
-        if (count($margins) !== 4) {
-            throw new RequestException('Wrong margins.');
-        }
-        $this->marginTop = $margins[0];
-        $this->marginBottom = $margins[1];
-        $this->marginLeft = $margins[2];
-        $this->marginRight = $margins[3];
     }
 
     /**
