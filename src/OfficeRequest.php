@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 final class OfficeRequest extends Request implements GotenbergRequestInterface
@@ -13,7 +15,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     private $landscape;
 
     /**
-     * OfficeRequest constructor.
      * @param Document[] $files
      */
     public function __construct(array $files)
@@ -21,9 +22,6 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
         $this->files = $files;
     }
 
-    /**
-     * @return string
-     */
     public function getPostURL(): string
     {
         return '/convert/office';
@@ -36,6 +34,7 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     {
         $values = parent::getFormValues();
         $values[self::LANDSCAPE] = $this->landscape;
+
         return $values;
     }
 
@@ -48,12 +47,10 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
         foreach ($this->files as $file) {
             $files[$file->getFileName()] = $file;
         }
+
         return $files;
     }
 
-    /**
-     * @param bool $landscape
-     */
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;

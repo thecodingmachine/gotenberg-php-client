@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
+use Exception;
 use GuzzleHttp\Psr7\MultipartStream;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
@@ -9,9 +12,9 @@ use Http\Discovery\MessageFactoryDiscovery;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Safe\Exceptions\FilesystemException;
+use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fwrite;
-use function Safe\fclose;
 
 final class Client
 {
@@ -21,12 +24,7 @@ final class Client
     /** @var string */
     private $apiURL;
 
-    /**
-     * Client constructor.
-     * @param string $apiURL
-     * @param HttpClient|null $client
-     */
-    public function __construct(string $apiURL, HttpClient $client = null)
+    public function __construct(string $apiURL, ?HttpClient $client = null)
     {
         $this->apiURL = $apiURL;
         $this->client = $client ?: HttpClientDiscovery::find();
@@ -35,10 +33,8 @@ final class Client
     /**
      * Sends the given documents to the API and returns the response.
      *
-     * @param GotenbergRequestInterface $request
-     * @return ResponseInterface
      * @throws ClientException
-     * @throws \Exception
+     * @throws Exception
      */
     public function post(GotenbergRequestInterface $request): ResponseInterface
     {
@@ -48,10 +44,8 @@ final class Client
     /**
      * Sends the given documents to the API, stores the resulting PDF in the given destination.
      *
-     * @param GotenbergRequestInterface $request
-     * @param string $destination
      * @throws ClientException
-     * @throws \Exception
+     * @throws Exception
      * @throws FilesystemException
      */
     public function store(GotenbergRequestInterface $request, string $destination): void
@@ -59,14 +53,10 @@ final class Client
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         $fileStream = $response->getBody();
         $fp = fopen($destination, 'w');
-        fwrite($fp, $fileStream);
+        fwrite($fp, $fileStream->getContents());
         fclose($fp);
     }
 
-    /**
-     * @param GotenbergRequestInterface $request
-     * @return RequestInterface
-     */
     private function makeMultipartFormDataRequest(GotenbergRequestInterface $request): RequestInterface
     {
         $multipartData = [];
@@ -84,11 +74,12 @@ final class Client
             $multipartData[] = [
                 'name' => 'files',
                 'filename' => $filename,
-                'contents' => $document->getFileStream()
+                'contents' => $document->getFileStream(),
             ];
         }
         $body = new MultipartStream($multipartData);
         $messageFactory = MessageFactoryDiscovery::find();
+
         return $messageFactory
             ->createRequest('POST', $this->apiURL . $request->getPostURL())
             ->withHeader('Content-Type', 'multipart/form-data; boundary="' . $body->getBoundary() . '"')
@@ -96,8 +87,6 @@ final class Client
     }
 
     /**
-     * @param ResponseInterface $response
-     * @return ResponseInterface
      * @throws ClientException
      */
     private function handleResponse(ResponseInterface $response): ResponseInterface
@@ -106,7 +95,7 @@ final class Client
             case 200:
                 return $response;
             default:
-                throw new ClientException($response->getBody(), $response->getStatusCode());
+                throw new ClientException($response->getBody()->getContents(), $response->getStatusCode());
         }
     }
 }

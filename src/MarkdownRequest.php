@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 final class MarkdownRequest extends HTMLRequest implements GotenbergRequestInterface
@@ -8,8 +10,6 @@ final class MarkdownRequest extends HTMLRequest implements GotenbergRequestInter
     private $markdowns;
 
     /**
-     * MarkdownRequest constructor.
-     * @param Document $index
      * @param Document[] $markdowns
      */
     public function __construct(Document $index, array $markdowns)
@@ -18,9 +18,6 @@ final class MarkdownRequest extends HTMLRequest implements GotenbergRequestInter
         $this->markdowns = $markdowns;
     }
 
-    /**
-     * @return string
-     */
     public function getPostURL(): string
     {
         return '/convert/markdown';
@@ -35,6 +32,7 @@ final class MarkdownRequest extends HTMLRequest implements GotenbergRequestInter
         foreach ($this->markdowns as $markdown) {
             $files[$markdown->getFileName()] = $markdown;
         }
+
         return $files;
     }
 }

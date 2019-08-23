@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 interface GotenbergRequestInterface
 {
-    /**
-     * @return string
-     */
     public function getPostURL(): string;
 
     /**

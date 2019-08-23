@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 final class MergeRequest extends Request implements GotenbergRequestInterface
@@ -8,7 +10,6 @@ final class MergeRequest extends Request implements GotenbergRequestInterface
     private $files;
 
     /**
-     * OfficeRequest constructor.
      * @param Document[] $files
      */
     public function __construct(array $files)
@@ -16,13 +17,9 @@ final class MergeRequest extends Request implements GotenbergRequestInterface
         $this->files = $files;
     }
 
-
-    /**
-     * @return string
-     */
     public function getPostURL(): string
     {
-        return '/convert/merge';
+        return '/merge';
     }
 
     /**
@@ -34,6 +31,7 @@ final class MergeRequest extends Request implements GotenbergRequestInterface
         foreach ($this->files as $file) {
             $files[$file->getFileName()] = $file;
         }
+
         return $files;
     }
 }

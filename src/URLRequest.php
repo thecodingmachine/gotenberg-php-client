@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 final class URLRequest extends ChromeRequest implements GotenbergRequestInterface
@@ -9,18 +11,11 @@ final class URLRequest extends ChromeRequest implements GotenbergRequestInterfac
     /** @var string */
     private $URL;
 
-    /**
-     * HTMLRequest constructor.
-     * @param string $URL
-     */
     public function __construct(string $URL)
     {
         $this->URL = $URL;
     }
 
-    /**
-     * @return string
-     */
     public function getPostURL(): string
     {
         return '/convert/url';
@@ -33,6 +28,7 @@ final class URLRequest extends ChromeRequest implements GotenbergRequestInterfac
     {
         $values = parent::getFormValues();
         $values[self::REMOTE_URL] = $this->URL;
+
         return $values;
     }
 }

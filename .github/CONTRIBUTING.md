@@ -9,7 +9,6 @@ find below useful information about how to contribute to the Gotenberg PHP clien
 
 1. Fork this repository
 2. Install Docker and Docker Compose.
-3. Install the latest [Orbit](https://github.com/gulien/orbit) release
 
 ### Working with git
 

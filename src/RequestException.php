@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
-final class RequestException extends \Exception
-{
+use Exception;
 
+final class RequestException extends Exception
+{
 }

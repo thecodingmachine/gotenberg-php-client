@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
+use HTTP\Client\Exception;
 use PHPUnit\Framework\TestCase;
 use Safe\Exceptions\FilesystemException;
 
-class ClientTest extends TestCase
+final class ClientTest extends TestCase
 {
-    const API_URL = 'gotenberg:3000';
+    public const API_URL = 'gotenberg:3000';
 
     /** @var HTMLRequest */
     private $HTMLRequest;
@@ -27,7 +30,7 @@ class ClientTest extends TestCase
     /**
      * @throws RequestException
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->HTMLRequest = $this->createHTMLRequest();
         $this->URLRequest = $this->createURLRequest();
@@ -37,7 +40,6 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @return HTMLRequest
      * @throws RequestException
      */
     private function createHTMLRequest(): HTMLRequest
@@ -52,18 +54,18 @@ class ClientTest extends TestCase
         ];
         $request = new HTMLRequest($index);
         $request->setResultFilename('foo.pdf');
-        $request->setWaitTimeout(5);
-        $request->setWaitDelay(1);
+        $request->setWaitTimeout(5.0);
+        $request->setWaitDelay(1.0);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+
         return $request;
     }
 
     /**
-     * @return URLRequest
      * @throws RequestException
      */
     private function createURLRequest(): URLRequest
@@ -72,17 +74,17 @@ class ClientTest extends TestCase
         $footer = DocumentFactory::makeFromPath('footer.html', __DIR__ . '/assets/url/footer.html');
         $request = new URLRequest('https://google.com');
         $request->setResultFilename('foo.pdf');
-        $request->setWaitTimeout(5);
-        $request->setWaitDelay(1);
+        $request->setWaitTimeout(5.0);
+        $request->setWaitDelay(1.0);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+
         return $request;
     }
 
     /**
-     * @return MarkdownRequest
      * @throws RequestException
      */
     public function createMarkdownRequest(): MarkdownRequest
@@ -102,19 +104,17 @@ class ClientTest extends TestCase
         ];
         $request = new MarkdownRequest($index, $markdowns);
         $request->setResultFilename('foo.pdf');
-        $request->setWaitTimeout(5);
-        $request->setWaitDelay(1);
+        $request->setWaitTimeout(5.0);
+        $request->setWaitDelay(1.0);
         $request->setHeader($header);
         $request->setFooter($footer);
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+
         return $request;
     }
 
-    /**
-     * @return OfficeRequest
-     */
     public function createOfficeRequest(): OfficeRequest
     {
         $files = [
@@ -122,14 +122,12 @@ class ClientTest extends TestCase
         ];
         $request = new OfficeRequest($files);
         $request->setResultFilename('foo.pdf');
-        $request->setWaitTimeout(5);
+        $request->setWaitTimeout(5.0);
         $request->setLandscape(false);
+
         return $request;
     }
 
-    /**
-     * @return MergeRequest
-     */
     public function createMergeRequest(): MergeRequest
     {
         $files = [
@@ -138,15 +136,16 @@ class ClientTest extends TestCase
         ];
         $request = new MergeRequest($files);
         $request->setResultFilename('foo.pdf');
-        $request->setWaitTimeout(5);
+        $request->setWaitTimeout(5.0);
+
         return $request;
     }
 
     /**
      * @throws ClientException
-     * @throws \HTTP\Client\Exception
+     * @throws Exception
      */
-    function testPost()
+    public function testPost(): void
     {
         $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
         // case 1: HTML.
@@ -174,9 +173,9 @@ class ClientTest extends TestCase
     /**
      * @throws ClientException
      * @throws FilesystemException
-     * @throws \HTTP\Client\Exception
+     * @throws Exception
      */
-    function testStore()
+    public function testStore(): void
     {
         $client = new Client(self::API_URL);
         // case 1: HTML.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 abstract class Request
@@ -19,6 +21,7 @@ abstract class Request
     private const RESULT_FILENAME = 'resultFilename';
     private const WAIT_TIMEOUT = 'waitTimeout';
     private const WEBHOOK_URL = 'webhookURL';
+    private const WEBHOOK_URL_TIMEOUT = 'webhookURLTimeout';
 
     /** @var string|null */
     private $resultFilename;
@@ -29,45 +32,48 @@ abstract class Request
     /** @var string|null */
     private $webhookURL;
 
+    /** @var float|null */
+    private $webhookURLTimeout;
+
     /**
      * @return array<string,mixed>
      */
     public function getFormValues(): array
     {
         $values = [];
-        if (!empty($this->resultFilename)) {
+        if (! empty($this->resultFilename)) {
             $values[self::RESULT_FILENAME] = $this->resultFilename;
         }
-        if (!is_null($this->waitTimeout)) {
+        if ($this->waitTimeout !== null) {
             $values[self::WAIT_TIMEOUT] = $this->waitTimeout;
         }
-        if (!empty($this->webhookURL)) {
+        if (! empty($this->webhookURL)) {
             $values[self::WEBHOOK_URL] = $this->webhookURL;
         }
+        if (! empty($this->webhookURLTimeout)) {
+            $values[self::WEBHOOK_URL_TIMEOUT] = $this->webhookURLTimeout;
+        }
+
         return $values;
     }
 
-    /**
-     * @param string|null $resultFilename
-     */
     public function setResultFilename(?string $resultFilename): void
     {
         $this->resultFilename = $resultFilename;
     }
 
-    /**
-     * @param float|null $waitTimeout
-     */
     public function setWaitTimeout(?float $waitTimeout): void
     {
         $this->waitTimeout = $waitTimeout;
     }
 
-    /**
-     * @param string|null $webhookURL
-     */
     public function setWebhookURL(?string $webhookURL): void
     {
         $this->webhookURL = $webhookURL;
+    }
+
+    public function setWebhookURLTimeout(?float $webhookURLTimeout): void
+    {
+        $this->webhookURLTimeout = $webhookURLTimeout;
     }
 }

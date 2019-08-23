@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
+
+use function count;
 
 abstract class ChromeRequest extends Request implements GotenbergRequestInterface
 {
@@ -49,28 +53,29 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function getFormValues(): array
     {
         $values = parent::getFormValues();
-        if (!is_null($this->waitDelay)) {
+        if ($this->waitDelay !== null) {
             $values[self::WAIT_DELAY] = $this->waitDelay;
         }
-        if (!is_null($this->paperWidth)) {
+        if ($this->paperWidth !== null) {
             $values[self::PAPER_WIDTH] = $this->paperWidth;
         }
-        if (!is_null($this->paperHeight)) {
+        if ($this->paperHeight !== null) {
             $values[self::PAPER_HEIGHT] = $this->paperHeight;
         }
-        if (!is_null($this->marginTop)) {
+        if ($this->marginTop !== null) {
             $values[self::MARGIN_TOP] = $this->marginTop;
         }
-        if (!is_null($this->marginBottom)) {
+        if ($this->marginBottom !== null) {
             $values[self::MARGIN_BOTTOM] = $this->marginBottom;
         }
-        if (!is_null($this->marginLeft)) {
+        if ($this->marginLeft !== null) {
             $values[self::MARGIN_LEFT] = $this->marginLeft;
         }
-        if (!is_null($this->marginRight)) {
+        if ($this->marginRight !== null) {
             $values[self::MARGIN_RIGHT] = $this->marginRight;
         }
         $values[self::LANDSCAPE] = $this->landscape;
+
         return $values;
     }
 
@@ -80,18 +85,16 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function getFormFiles(): array
     {
         $files = [];
-        if (!empty($this->header)) {
+        if (! empty($this->header)) {
             $files['header.html'] = $this->header;
         }
-        if (!empty($this->footer)) {
+        if (! empty($this->footer)) {
             $files['footer.html'] = $this->footer;
         }
+
         return $files;
     }
 
-    /**
-     * @param float|null $waitDelay
-     */
     public function setWaitDelay(?float $waitDelay): void
     {
         $this->waitDelay = $waitDelay;
@@ -99,6 +102,7 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
 
     /**
      * @param float[] $paperSize
+     *
      * @throws RequestException
      */
     public function setPaperSize(array $paperSize): void
@@ -112,6 +116,7 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
 
     /**
      * @param float[] $margins
+     *
      * @throws RequestException
      */
     public function setMargins(array $margins): void
@@ -125,73 +130,46 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
         $this->marginRight = $margins[3];
     }
 
-    /**
-     * @param Document|null $header
-     */
     public function setHeader(?Document $header): void
     {
         $this->header = $header;
     }
 
-    /**
-     * @param Document|null $footer
-     */
     public function setFooter(?Document $footer): void
     {
         $this->footer = $footer;
     }
 
-    /**
-     * @param float|null $paperWidth
-     */
     public function setPaperWidth(?float $paperWidth): void
     {
         $this->paperWidth = $paperWidth;
     }
 
-    /**
-     * @param float|null $paperHeight
-     */
     public function setPaperHeight(?float $paperHeight): void
     {
         $this->paperHeight = $paperHeight;
     }
 
-    /**
-     * @param float|null $marginTop
-     */
     public function setMarginTop(?float $marginTop): void
     {
         $this->marginTop = $marginTop;
     }
 
-    /**
-     * @param float|null $marginBottom
-     */
     public function setMarginBottom(?float $marginBottom): void
     {
         $this->marginBottom = $marginBottom;
     }
 
-    /**
-     * @param float|null $marginLeft
-     */
     public function setMarginLeft(?float $marginLeft): void
     {
         $this->marginLeft = $marginLeft;
     }
 
-    /**
-     * @param float|null $marginRight
-     */
     public function setMarginRight(?float $marginRight): void
     {
         $this->marginRight = $marginRight;
     }
 
-    /**
-     * @param bool $landscape
-     */
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;

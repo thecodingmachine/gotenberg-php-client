@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 class HTMLRequest extends ChromeRequest implements GotenbergRequestInterface
@@ -10,19 +12,12 @@ class HTMLRequest extends ChromeRequest implements GotenbergRequestInterface
     /** @var Document[] */
     private $assets;
 
-    /**
-     * HTMLRequest constructor.
-     * @param Document $index
-     */
     public function __construct(Document $index)
     {
         $this->index = $index;
         $this->assets = [];
     }
 
-    /**
-     * @return string
-     */
     public function getPostURL(): string
     {
         return '/convert/html';
@@ -38,6 +33,7 @@ class HTMLRequest extends ChromeRequest implements GotenbergRequestInterface
         foreach ($this->assets as $asset) {
             $files[$asset->getFileName()] = $asset;
         }
+
         return $files;
     }
 

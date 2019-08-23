@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheCodingMachine\Gotenberg;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
 use PHPUnit\Framework\TestCase;
 
-class DocumentFactoryTest extends TestCase
+final class DocumentFactoryTest extends TestCase
 {
-    function testMake()
+    public function testMake(): void
     {
         // case 1: uses a file path.
         $document = DocumentFactory::makeFromPath('file.pdf', __DIR__ . '/assets/file.pdf');
