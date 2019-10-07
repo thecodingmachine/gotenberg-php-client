@@ -16,6 +16,7 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     private const MARGIN_LEFT = 'marginLeft';
     private const MARGIN_RIGHT = 'marginRight';
     private const LANDSCAPE = 'landscape';
+    private const GOOGLE_CHROME_RPCC_BUFFER_SIZE = 'googleChromeRpccBufferSize';
 
     /** @var float|null */
     private $waitDelay;
@@ -47,6 +48,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     /** @var bool */
     private $landscape;
 
+    /** @var int|null */
+    private $googleChromeRpccBufferSize;
+
     /**
      * @return array<string,mixed>
      */
@@ -73,6 +77,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
         }
         if ($this->marginRight !== null) {
             $values[self::MARGIN_RIGHT] = $this->marginRight;
+        }
+        if ($this->googleChromeRpccBufferSize !== null) {
+            $values[self::GOOGLE_CHROME_RPCC_BUFFER_SIZE] = $this->googleChromeRpccBufferSize;
         }
         $values[self::LANDSCAPE] = $this->landscape;
 
@@ -173,5 +180,10 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;
+    }
+
+    public function setGoogleChromeRpccBufferSize(?int $googleChromeRpccBufferSize): void
+    {
+        $this->googleChromeRpccBufferSize = $googleChromeRpccBufferSize;
     }
 }
