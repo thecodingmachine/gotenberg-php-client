@@ -61,6 +61,7 @@ final class ClientTest extends TestCase
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setGoogleChromeRpccBufferSize(1048576);
 
         return $request;
     }
@@ -80,6 +81,7 @@ final class ClientTest extends TestCase
         $request->setFooter($footer);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setGoogleChromeRpccBufferSize(1048576);
 
         return $request;
     }
@@ -111,6 +113,7 @@ final class ClientTest extends TestCase
         $request->setAssets($assets);
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
+        $request->setGoogleChromeRpccBufferSize(1048576);
 
         return $request;
     }
