@@ -67,6 +67,11 @@ abstract class Request
         return $values;
     }
 
+    public function hasWebhook(): bool
+    {
+        return ! empty($this->webhookURL);
+    }
+
     /**
      * @return array<string,string>
      */

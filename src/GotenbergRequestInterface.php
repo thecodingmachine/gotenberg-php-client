@@ -22,4 +22,6 @@ interface GotenbergRequestInterface
      * @return array<string,Document>
      */
     public function getFormFiles(): array;
+
+    public function hasWebhook(): bool;
 }

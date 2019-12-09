@@ -45,11 +45,15 @@ final class Client
      * Sends the given documents to the API, stores the resulting PDF in the given destination.
      *
      * @throws ClientException
+     * @throws RequestException
      * @throws Exception
      * @throws FilesystemException
      */
     public function store(GotenbergRequestInterface $request, string $destination): void
     {
+        if ($request->hasWebhook()) {
+            throw new RequestException('Cannot use method store with a webhook');
+        }
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         $fileStream = $response->getBody();
         $fp = fopen($destination, 'w');
