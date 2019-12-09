@@ -52,7 +52,7 @@ final class Client
     public function store(GotenbergRequestInterface $request, string $destination): void
     {
         if ($request->hasWebhook()) {
-            throw new RequestException('Cannot use method store with a webhook');
+            throw new RequestException('Cannot use method store with a webhook.');
         }
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         $fileStream = $response->getBody();
