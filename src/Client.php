@@ -79,11 +79,15 @@ final class Client
         }
         $body = new MultipartStream($multipartData);
         $messageFactory = MessageFactoryDiscovery::find();
-
-        return $messageFactory
+        $message = $messageFactory
             ->createRequest('POST', $this->apiURL . $request->getPostURL())
             ->withHeader('Content-Type', 'multipart/form-data; boundary="' . $body->getBoundary() . '"')
             ->withBody($body);
+        foreach ($request->getCustomHTTPHeaders() as $key => $value) {
+            $message = $message->withHeader($key, $value);
+        }
+
+        return $message;
     }
 
     /**

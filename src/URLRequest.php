@@ -8,11 +8,14 @@ final class URLRequest extends ChromeRequest implements GotenbergRequestInterfac
 {
     private const REMOTE_URL = 'remoteURL';
 
+    private const REMOTE_URL_BASE_HTTP_HEADER_KEY = 'Gotenberg-Remoteurl-';
+
     /** @var string */
     private $URL;
 
     public function __construct(string $URL)
     {
+        parent::__construct();
         $this->URL = $URL;
     }
 
@@ -30,5 +33,11 @@ final class URLRequest extends ChromeRequest implements GotenbergRequestInterfac
         $values[self::REMOTE_URL] = $this->URL;
 
         return $values;
+    }
+
+    public function addRemoteURLHTTPHeader(string $key, string $value): void
+    {
+        $key = self::REMOTE_URL_BASE_HTTP_HEADER_KEY . $key;
+        $this->customHTTPHeaders[$key] = $value;
     }
 }

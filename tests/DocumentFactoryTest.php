@@ -6,9 +6,13 @@ namespace TheCodingMachine\Gotenberg;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
 use PHPUnit\Framework\TestCase;
+use Safe\Exceptions\FilesystemException;
 
 final class DocumentFactoryTest extends TestCase
 {
+    /**
+     * @throws FilesystemException
+     */
     public function testMake(): void
     {
         // case 1: uses a file path.

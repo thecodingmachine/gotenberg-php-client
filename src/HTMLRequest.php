@@ -14,6 +14,7 @@ class HTMLRequest extends ChromeRequest implements GotenbergRequestInterface
 
     public function __construct(Document $index)
     {
+        parent::__construct();
         $this->index = $index;
         $this->assets = [];
     }

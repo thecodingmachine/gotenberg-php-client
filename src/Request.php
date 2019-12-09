@@ -23,6 +23,8 @@ abstract class Request
     private const WEBHOOK_URL = 'webhookURL';
     private const WEBHOOK_URL_TIMEOUT = 'webhookURLTimeout';
 
+    private const WEBHOOK_URL_BASE_HTTP_HEADER_KEY = 'Gotenberg-Webhookurl-';
+
     /** @var string|null */
     private $resultFilename;
 
@@ -34,6 +36,14 @@ abstract class Request
 
     /** @var float|null */
     private $webhookURLTimeout;
+
+    /** @var array<string,string> */
+    protected $customHTTPHeaders;
+
+    public function __construct()
+    {
+        $this->customHTTPHeaders = [];
+    }
 
     /**
      * @return array<string,mixed>
@@ -57,6 +67,14 @@ abstract class Request
         return $values;
     }
 
+    /**
+     * @return array<string,string>
+     */
+    public function getCustomHTTPHeaders(): array
+    {
+        return $this->customHTTPHeaders;
+    }
+
     public function setResultFilename(?string $resultFilename): void
     {
         $this->resultFilename = $resultFilename;
@@ -75,5 +93,11 @@ abstract class Request
     public function setWebhookURLTimeout(?float $webhookURLTimeout): void
     {
         $this->webhookURLTimeout = $webhookURLTimeout;
+    }
+
+    public function addWebhookURLHTTPHeader(string $key, string $value): void
+    {
+        $key = self::WEBHOOK_URL_BASE_HTTP_HEADER_KEY . $key;
+        $this->customHTTPHeaders[$key] = $value;
     }
 }

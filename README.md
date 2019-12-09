@@ -19,56 +19,53 @@ $ composer require thecodingmachine/gotenberg-php-client
 ## Usage
 
 ```php
-<?php
-
-namespace YourAwesomeNamespace;
-
 use TheCodingMachine\Gotenberg\Client;
 use TheCodingMachine\Gotenberg\ClientException;
 use TheCodingMachine\Gotenberg\DocumentFactory;
 use TheCodingMachine\Gotenberg\HTMLRequest;
 use TheCodingMachine\Gotenberg\Request;
 use TheCodingMachine\Gotenberg\RequestException;
+use GuzzleHttp\Psr7\LazyOpenStream;
 
-class YourAwesomeClass {
+# create the client.
+$client = new Client('http://localhost:3000', new \Http\Adapter\Guzzle6\Client());
+# ... or the following if you want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
+$client = new Client('http://localhost:3000');
+
+# prepare the files required for your conversion.
+
+# from a path.
+$index = DocumentFactory::makeFromPath('index.html', '/path/to/file');
+# ... or from your own stream.
+$stream = new LazyOpenStream('/path/to/file', 'r');
+$index = DocumentFactory::makeFromStream('index.html', $stream);
+// ... or from a string.
+$index = DocumentFactory::makeFromString('index.html', '<html>Foo</html>');
+
+$header = DocumentFactory::makeFromPath('header.html', '/path/to/file');
+$footer = DocumentFactory::makeFromPath('footer.html', '/path/to/file');
+$assets = [
+    DocumentFactory::makeFromPath('style.css', '/path/to/file'),
+    DocumentFactory::makeFromPath('img.png', '/path/to/file'),
+];
+
+try {
+    $request = new HTMLRequest($index);
+    $request->setHeader($header);
+    $request->setFooter($footer);
+    $request->setAssets($assets);
+    $request->setPaperSize(Request::A4);
+    $request->setMargins(Request::NO_MARGINS);
     
-    public function yourAwesomeMethod()
-    {
-        $client = new Client('http://localhost:3000', new \Http\Adapter\Guzzle6\Client());
-        # or the following if you want the client to discover automatically an installed implementation of the PSR7 `HttpClient`.
-        $client = new Client('http://localhost:3000');
-        
-        # HTML conversion example.
-        $index = DocumentFactory::makeFromPath('index.html', '/path/to/file');
-        $header = DocumentFactory::makeFromPath('header.html', '/path/to/file');
-        $footer = DocumentFactory::makeFromPath('footer.html', '/path/to/file');
-        $assets = [
-            DocumentFactory::makeFromPath('style.css', '/path/to/file'),
-            DocumentFactory::makeFromPath('img.png', '/path/to/file'),
-        ];
-        
-        try {
-            $request = new HTMLRequest($index);
-            $request->setHeader($header);
-            $request->setFooter($footer);
-            $request->setAssets($assets);
-            $request->setPaperSize(Request::A4);
-            $request->setMargins(Request::NO_MARGINS);
-            
-            # store method allows you to... store the resulting PDF in a particular destination.
-            $client->store($request, 'path/you/want/the/pdf/to/be/stored.pdf');
-            
-            # if you wish to redirect the response directly to the browser, you may also use:
-            $client->post($request);
-            
-        } catch (RequestException $e) {
-            # this exception is thrown if given paper size or margins are not correct.
-        } catch (ClientException $e) {
-            # this exception is thrown by the client if the API has returned a code != 200.
-        } catch (\Exception $e) {
-            # some (random?) exception.
-        }
-    }  
+    # store method allows you to... store the resulting PDF in a particular destination.
+    $client->store($request, 'path/you/want/the/pdf/to/be/stored.pdf');
+    
+    # if you wish to redirect the response directly to the browser, you may also use:
+    $client->post($request);          
+} catch (RequestException $e) {
+    # this exception is thrown if given paper size or margins are not correct.
+} catch (ClientException $e) {
+    # this exception is thrown by the client if the API has returned a code != 200.
 }
 ```
 

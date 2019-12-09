@@ -9,6 +9,11 @@ interface GotenbergRequestInterface
     public function getPostURL(): string;
 
     /**
+     * @return array<string,string>
+     */
+    public function getCustomHTTPHeaders(): array;
+
+    /**
      * @return array<string,mixed>
      */
     public function getFormValues(): array;
