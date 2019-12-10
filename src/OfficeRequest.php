@@ -7,6 +7,7 @@ namespace TheCodingMachine\Gotenberg;
 final class OfficeRequest extends Request implements GotenbergRequestInterface
 {
     private const LANDSCAPE = 'landscape';
+    private const PAGE_RANGES = 'pageRanges';
 
     /** @var Document[] */
     private $files;
@@ -14,11 +15,15 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     /** @var bool */
     private $landscape;
 
+    /** @var string|null */
+    private $pageRanges;
+
     /**
      * @param Document[] $files
      */
     public function __construct(array $files)
     {
+        parent::__construct();
         $this->files = $files;
     }
 
@@ -33,6 +38,9 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     public function getFormValues(): array
     {
         $values = parent::getFormValues();
+        if ($this->pageRanges !== null) {
+            $values[self::PAGE_RANGES] = $this->pageRanges;
+        }
         $values[self::LANDSCAPE] = $this->landscape;
 
         return $values;
@@ -54,5 +62,10 @@ final class OfficeRequest extends Request implements GotenbergRequestInterface
     public function setLandscape(bool $landscape): void
     {
         $this->landscape = $landscape;
+    }
+
+    public function setPageRanges(string $pageRanges): void
+    {
+        $this->pageRanges = $pageRanges;
     }
 }

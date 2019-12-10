@@ -45,11 +45,15 @@ final class Client
      * Sends the given documents to the API, stores the resulting PDF in the given destination.
      *
      * @throws ClientException
+     * @throws RequestException
      * @throws Exception
      * @throws FilesystemException
      */
     public function store(GotenbergRequestInterface $request, string $destination): void
     {
+        if ($request->hasWebhook()) {
+            throw new RequestException('Cannot use method store with a webhook.');
+        }
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         $fileStream = $response->getBody();
         $fp = fopen($destination, 'w');
@@ -79,11 +83,15 @@ final class Client
         }
         $body = new MultipartStream($multipartData);
         $messageFactory = MessageFactoryDiscovery::find();
-
-        return $messageFactory
+        $message = $messageFactory
             ->createRequest('POST', $this->apiURL . $request->getPostURL())
             ->withHeader('Content-Type', 'multipart/form-data; boundary="' . $body->getBoundary() . '"')
             ->withBody($body);
+        foreach ($request->getCustomHTTPHeaders() as $key => $value) {
+            $message = $message->withHeader($key, $value);
+        }
+
+        return $message;
     }
 
     /**

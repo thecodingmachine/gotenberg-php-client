@@ -14,6 +14,7 @@ final class MergeRequest extends Request implements GotenbergRequestInterface
      */
     public function __construct(array $files)
     {
+        parent::__construct();
         $this->files = $files;
     }
 

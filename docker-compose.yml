@@ -6,12 +6,15 @@ services:
     image: thecodingmachine/php:7.3-v2-cli
     container_name: php
     environment:
-      - PHP_EXTENSION_XDEBUG=1
+      PHP_EXTENSION_XDEBUG: 1
     restart: 'no'
     volumes:
       - ./:/usr/src/app:rw
 
   gotenberg:
-    image: thecodingmachine/gotenberg:6.0.1
+    image: thecodingmachine/gotenberg:6
+    environment:
+      LOG_LEVEL: 'DEBUG'
+      DEFAULT_WAIT_TIMEOUT: '30.0'
     container_name: gotenberg
     restart: 'no'

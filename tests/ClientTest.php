@@ -202,4 +202,64 @@ final class ClientTest extends TestCase
         $client->store($this->mergeRequest, $filePath);
         $this->assertFileExists($filePath);
     }
+
+    /**
+     * @throws ClientException
+     * @throws RequestException
+     */
+    public function testPageRanges(): void
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        // case 1: HTML.
+        $request = $this->createHTMLRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 2: URL.
+        $request = $this->createURLRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 3: markdown.
+        $request = $this->createMarkdownRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 4: office.
+        $request = $this->createOfficeRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+    }
+
+    /**
+     * @throws ClientException
+     */
+    public function testWebhook(): void
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        $request = $this->createMergeRequest();
+        $request->setWebhookURL('https://google.com');
+        $request->setWebhookURLTimeout(5.0);
+        $request->addWebhookURLHTTPHeader('A-Header', 'Foo');
+        $response = $client->post($request);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @throws RequestException
+     * @throws ClientException
+     */
+    public function testRemoteURLHTTPHeader(): void
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        $request = $this->createURLRequest();
+        $request->addRemoteURLHTTPHeader('A-Header', 'Foo');
+        $response = $client->post($request);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }
