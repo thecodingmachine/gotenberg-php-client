@@ -205,6 +205,39 @@ final class ClientTest extends TestCase
 
     /**
      * @throws ClientException
+     * @throws RequestException
+     */
+    public function testPageRanges(): void
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        // case 1: HTML.
+        $request = $this->createHTMLRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 2: URL.
+        $request = $this->createURLRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 3: markdown.
+        $request = $this->createMarkdownRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+        // case 4: office.
+        $request = $this->createOfficeRequest();
+        $request->setPageRanges('1-1');
+        $response = $client->post($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertNotEmpty($response->getBody());
+    }
+
+    /**
+     * @throws ClientException
      */
     public function testWebhook(): void
     {
