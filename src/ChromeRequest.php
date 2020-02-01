@@ -18,6 +18,7 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     private const LANDSCAPE = 'landscape';
     private const PAGE_RANGES = 'pageRanges';
     private const GOOGLE_CHROME_RPCC_BUFFER_SIZE = 'googleChromeRpccBufferSize';
+    private const SCALE = 'scale';
 
     /** @var float|null */
     private $waitDelay;
@@ -55,6 +56,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     /** @var int|null */
     private $googleChromeRpccBufferSize;
 
+    /** @var float|null */
+    private $scale;
+
     /**
      * @return array<string,mixed>
      */
@@ -87,6 +91,9 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
         }
         if ($this->googleChromeRpccBufferSize !== null) {
             $values[self::GOOGLE_CHROME_RPCC_BUFFER_SIZE] = $this->googleChromeRpccBufferSize;
+        }
+        if ($this->scale !== null) {
+            $values[self::SCALE] = $this->scale;
         }
         $values[self::LANDSCAPE] = $this->landscape;
 
@@ -197,5 +204,10 @@ abstract class ChromeRequest extends Request implements GotenbergRequestInterfac
     public function setGoogleChromeRpccBufferSize(?int $googleChromeRpccBufferSize): void
     {
         $this->googleChromeRpccBufferSize = $googleChromeRpccBufferSize;
+    }
+
+    public function setScale(?float $scale): void
+    {
+        $this->scale = $scale;
     }
 }

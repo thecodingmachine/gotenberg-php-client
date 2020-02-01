@@ -56,6 +56,7 @@ try {
     $request->setAssets($assets);
     $request->setPaperSize(Request::A4);
     $request->setMargins(Request::NO_MARGINS);
+    $request->setScale(0.75);
     
     # store method allows you to... store the resulting PDF in a particular destination.
     $client->store($request, 'path/you/want/the/pdf/to/be/stored.pdf');
