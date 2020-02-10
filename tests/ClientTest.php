@@ -62,6 +62,7 @@ final class ClientTest extends TestCase
         $request->setPaperSize(Request::A4);
         $request->setMargins(Request::NO_MARGINS);
         $request->setGoogleChromeRpccBufferSize(1048576);
+        $request->setScale(0.9);
 
         return $request;
     }
