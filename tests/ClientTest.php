@@ -7,6 +7,7 @@ namespace TheCodingMachine\Gotenberg;
 use HTTP\Client\Exception;
 use PHPUnit\Framework\TestCase;
 use Safe\Exceptions\FilesystemException;
+use function method_exists;
 
 final class ClientTest extends TestCase
 {
@@ -291,9 +292,8 @@ final class ClientTest extends TestCase
         $this->assertCaseFor($request, $client);
     }
 
-
-    private function assertCaseFor($request, $client) {
-
+    private function assertCaseFor($request, $client): void
+    {
         if (method_exists($request, 'setWaitTimeout')) {
             $request->setWaitTimeout(30.0);
         }

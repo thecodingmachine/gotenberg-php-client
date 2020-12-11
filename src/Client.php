@@ -50,11 +50,10 @@ final class Client
      */
     public function stream(GotenbergRequestInterface $request): ResponseInterface
     {
-
         return new Response(200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename=stream.pdf',
-            'Cache-Control' => 'max-age=0'
+            'Cache-Control' => 'max-age=0',
         ], $this->transformResponse($request)->getBody());
     }
 
@@ -125,14 +124,11 @@ final class Client
     }
 
     /**
-     * @param  \TheCodingMachine\Gotenberg\GotenbergRequestInterface  $request
-     * @return \Psr\Http\Message\ResponseInterface
      * @throws \Http\Client\Exception
-     * @throws \TheCodingMachine\Gotenberg\ClientException
+     * @throws ClientException
      */
     private function transformResponse(GotenbergRequestInterface $request): ResponseInterface
     {
-
         return $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
     }
 }
