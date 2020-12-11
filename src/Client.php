@@ -6,6 +6,7 @@ namespace TheCodingMachine\Gotenberg;
 
 use Exception;
 use GuzzleHttp\Psr7\MultipartStream;
+use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
@@ -39,6 +40,22 @@ final class Client
     public function post(GotenbergRequestInterface $request): ResponseInterface
     {
         return $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
+    }
+
+    /**
+     * Sends the given documents to the API and returns the response diractly to the cleint.
+     *
+     * @throws ClientException
+     * @throws Exception
+     */
+    public function stream(GotenbergRequestInterface $request): ResponseInterface
+    {
+
+        return new Response(200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename=stream.pdf',
+            'Cache-Control' => 'max-age=0'
+        ], $this->transformResponse($request)->getBody());
     }
 
     /**
@@ -105,5 +122,17 @@ final class Client
             default:
                 throw new ClientException($response->getBody()->getContents(), $response->getStatusCode());
         }
+    }
+
+    /**
+     * @param  \TheCodingMachine\Gotenberg\GotenbergRequestInterface  $request
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Http\Client\Exception
+     * @throws \TheCodingMachine\Gotenberg\ClientException
+     */
+    private function transformResponse(GotenbergRequestInterface $request): ResponseInterface
+    {
+
+        return $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
     }
 }

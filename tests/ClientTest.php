@@ -263,4 +263,46 @@ final class ClientTest extends TestCase
         $response = $client->post($request);
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    /**
+     * @throws RequestException
+     * @throws ClientException
+     */
+    public function testStream(): void
+    {
+        $client = new Client(self::API_URL, new \Http\Adapter\Guzzle6\Client());
+        // case 1: HTML.
+        $request = $this->createHTMLRequest();
+        $request->setPageRanges('1-1');
+        $this->assertCaseFor($request, $client);
+
+        // case 2: URL.
+        $request = $this->createURLRequest();
+        $request->setPageRanges('1-1');
+        $this->assertCaseFor($request, $client);
+        // case 3: markdown.
+        $request = $this->createMarkdownRequest();
+        $request->setPageRanges('1-1');
+        $this->assertCaseFor($request, $client);
+
+        // case 4: office.
+        $request = $this->createOfficeRequest();
+        $request->setPageRanges('1-1');
+        $this->assertCaseFor($request, $client);
+    }
+
+
+    private function assertCaseFor($request, $client) {
+
+        if (method_exists($request, 'setWaitTimeout')) {
+            $request->setWaitTimeout(30.0);
+        }
+
+        $response = $client->stream($request);
+        $this->assertEquals($response->getHeaderLine('Content-Type'), 'application/pdf');
+        $this->assertEquals($response->getHeaderLine('Content-Disposition'), 'inline; filename=stream.pdf');
+        $this->assertEquals($response->getHeaderLine('Cache-Control'), 'max-age=0');
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertNotEmpty($response->getBody());
+    }
 }
