@@ -6,7 +6,6 @@ namespace TheCodingMachine\Gotenberg;
 
 use HTTP\Client\Exception;
 use PHPUnit\Framework\TestCase;
-use Safe\Exceptions\FilesystemException;
 
 final class ClientTest extends TestCase
 {
