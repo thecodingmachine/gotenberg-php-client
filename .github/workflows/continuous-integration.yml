@@ -1,0 +1,49 @@
+name: "Integrate"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci:
+    name: "Run Build"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - 7.1
+
+    services:
+      gotenberg:
+        image: thecodingmachine/gotenberg:6
+        ports:
+          - 3000:3000
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+
+      - name: "Install Dependencies"
+        run: composer install
+
+      - name: "Run csfix"
+        run: composer run csfix
+
+      - name: "Run cscheck"
+        run: composer run cscheck
+
+      - name: "Run phpstan"
+        run: composer run phpstan
+
+      - name: "Run Tests"
+        run: composer run phpunit
