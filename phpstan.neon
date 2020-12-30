@@ -1,3 +1,2 @@
 includes:
     - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
-    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon

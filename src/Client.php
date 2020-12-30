@@ -11,10 +11,9 @@ use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Safe\Exceptions\FilesystemException;
-use function Safe\fclose;
-use function Safe\fopen;
-use function Safe\fwrite;
+use function fclose;
+use function fopen;
+use function fwrite;
 
 final class Client
 {
@@ -57,8 +56,17 @@ final class Client
         $response = $this->handleResponse($this->client->sendRequest($this->makeMultipartFormDataRequest($request)));
         $fileStream = $response->getBody();
         $fp = fopen($destination, 'w');
-        fwrite($fp, $fileStream->getContents());
-        fclose($fp);
+        if ($fp === false) {
+            throw FilesystemException::createFromPhpError();
+        }
+
+        if (fwrite($fp, $fileStream->getContents()) === false) {
+            throw FilesystemException::createFromPhpError();
+        }
+
+        if (fclose($fp) === false) {
+            throw FilesystemException::createFromPhpError();
+        }
     }
 
     private function makeMultipartFormDataRequest(GotenbergRequestInterface $request): RequestInterface
