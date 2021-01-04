@@ -15,7 +15,7 @@ use function fclose;
 use function fopen;
 use function fwrite;
 
-final class Client
+final class Client implements GotenbergClientInterface
 {
     /** @var HttpClient */
     private $client;
@@ -30,7 +30,7 @@ final class Client
     }
 
     /**
-     * Sends the given documents to the API and returns the response.
+     * {@inheritdoc}
      *
      * @throws ClientException
      * @throws Exception
@@ -41,7 +41,7 @@ final class Client
     }
 
     /**
-     * Sends the given documents to the API, stores the resulting PDF in the given destination.
+     * {@inheritdoc}
      *
      * @throws ClientException
      * @throws RequestException
