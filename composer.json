@@ -36,7 +36,7 @@
     "phpstan/phpstan": "^0.12.7",
     "thecodingmachine/phpstan-strict-rules": "^0.12.0",
     "php-http/mock-client": "^1.0",
-    "php-http/guzzle6-adapter": "^1.1",
+    "php-http/guzzle6-adapter": "^1.1 || ^2.0",
     "doctrine/coding-standard": "^6.0"
   },
   "autoload" : {
