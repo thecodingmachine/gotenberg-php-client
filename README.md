@@ -70,7 +70,7 @@ try {
 }
 ```
 
-For more complete usages, head to the [documentation](https://thecodingmachine.github.io/gotenberg).
+For more complete usages, head to the [documentation](https://gotenberg.dev/).
 
 ## Badges
 
