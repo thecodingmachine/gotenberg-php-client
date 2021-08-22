@@ -1,3 +1,5 @@
+**⚠️ Not working for Gotenberg >= 7 ⚠️** 
+
 # Gotenberg PHP client
 
 A simple PHP client for interacting with a Gotenberg API.
