@@ -1,4 +1,4 @@
-**⚠️ Not working for Gotenberg >= 7 ⚠️** 
+⚠️ For **Gotenberg 7.x**, use [gotenberg-/gotenberg-php](https://github.com/gotenberg/gotenberg-php) instead.
 
 # Gotenberg PHP client
 
