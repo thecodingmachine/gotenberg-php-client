@@ -1,5 +1,7 @@
 ⚠️ For **Gotenberg 7.x**, use [gotenberg-/gotenberg-php](https://github.com/gotenberg/gotenberg-php) instead.
 
+_This library is unmaintained and will not receive updates. Consider migrating to *Gotenberg 7.x* and the according new library instead._
+
 # Gotenberg PHP client
 
 A simple PHP client for interacting with a Gotenberg API.
