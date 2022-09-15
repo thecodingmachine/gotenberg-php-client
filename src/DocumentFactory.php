@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace TheCodingMachine\Gotenberg;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 use function fopen;
 use function fwrite;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class DocumentFactory
 {
@@ -36,6 +36,6 @@ final class DocumentFactory
             throw FilesystemException::createFromPhpError();
         }
 
-        return new Document($fileName, stream_for($fileStream));
+        return new Document($fileName, new Stream($fileStream));
     }
 }
